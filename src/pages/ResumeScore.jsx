@@ -10,60 +10,62 @@ import {
   FiBarChart2,
   FiFileText,
 } from "react-icons/fi";
-import { uploadResume } from "../services/supabase";
 import { analyzeResume } from "../services/ai-service";
 import { toast } from "react-toastify";
+import { supabase } from "../services/supabase";
 
 function ResumeScore() {
   const [step, setStep] = useState(1);
   const [resumeFile, setResumeFile] = useState(null);
   const [score, setScore] = useState(null);
   const [feedback, setFeedback] = useState([]);
-  const [analysisTime, setAnalysisTime] = useState(null);
+  const [resumeURL, setResumeURL] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!resumeFile) {
+      toast.error("Please upload a resume first.");
+      return;
+    }
+
     setStep(2);
 
     try {
+      // 1. Analyze text content from the file
       const text = await resumeFile.text();
-      await uploadResume("user123", resumeFile);
+      const result = await analyzeResume(plainText);
 
-      const res = await analyzeResume(text);
-      console.log(res);
+      // 2. Upload file to Supabase
+      const filePath = `resumes/${Date.now()}-${resumeFile.name}`;
+      console.log("File path", filePath);
 
-      setTimeout(() => {
-        setScore(78);
-        setFeedback([
-          {
-            type: "good",
-            text: "Strong education section with relevant coursework",
-            detail:
-              "Your B.Tech in Computer Science is well-presented with key projects highlighted.",
-          },
-          {
-            type: "improvement",
-            text: "Add quantifiable achievements",
-            detail:
-              "Include metrics like 'Improved system performance by 30%' or 'Led team of 5 members'",
-          },
-          {
-            type: "critical",
-            text: "Missing keywords from job description",
-            detail:
-              "Add terms like 'React', 'Node.js', and 'REST APIs' that appear in your target job postings",
-          },
-          {
-            type: "good",
-            text: "Professional formatting and structure",
-            detail:
-              "Clean layout with clear sections makes your resume easy to scan",
-          },
-        ]);
-        setStep(3);
-      }, 2000);
+      const { data, error } = await supabase.storage
+        .from("resumes")
+        .upload(filePath, resumeFile, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (error) {
+        console.error("Upload error:", error.message);
+        toast.error("Upload failed.");
+        return;
+      }
+
+      // 3. Get public download URL
+      setStep(3);
+      const { data: urlData } = supabase.storage
+        .from("resumes")
+        .getPublicUrl(filePath);
+
+      setResumeURL(urlData.publicUrl);
+      toast.success("Resume uploaded & analyzed!");
     } catch (error) {
-      toast.error("Error scoring resume");
+      console.error("Resume analysis error:", error);
+      toast.error("Error analyzing resume.");
+    } finally {
+      setStep(1);
     }
   };
 
@@ -91,6 +93,15 @@ function ResumeScore() {
           </div>
         </div>
 
+        {resumeURL && (
+          <iframe
+            src={`${resumeURL}#toolbar=0&navpanes=0&scrollbar=0`}
+            title="Resume Viewer"
+            className="w-full h-[120vh] border-none rounded"
+            style={{ border: "none" }}
+          ></iframe>
+        )}
+
         <div className="p-6 sm:p-8">
           {/* Step 1: Upload */}
           {step === 1 && (
@@ -113,7 +124,7 @@ function ResumeScore() {
                     type="file"
                     className="hidden"
                     id="resume-upload"
-                    accept=".pdf,.docx,.txt"
+                    accept="application/pdf"
                     onChange={(e) => setResumeFile(e.target.files[0])}
                   />
                   <label

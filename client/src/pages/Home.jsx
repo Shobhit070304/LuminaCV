@@ -388,55 +388,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Community Section */}
-      <section className="py-24 bg-gradient-to-br from-amber-100/60 to-orange-50/40">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
-          <FiUsers className="w-12 h-12 mx-auto mb-5 text-amber-600" />
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Join Our Career Community
-          </h2>
-          <p className="text-lg text-gray-600 mb-8">
-            Collaborate with peers, attend expert workshops, and get ongoing
-            inspiration in our exclusive graduates’ Discord and forum.
-          </p>
-          <button className="px-8 py-4 bg-amber-600 hover:bg-orange-500 text-white rounded-xl font-semibold shadow-lg transition">
-            Join Community
-          </button>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-28 bg-gradient-to-br from-amber-600 to-orange-500 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://uploads-ssl.webflow.com/5f6bc60e665f54545a1e52a5/615d3c5b255e6a0a9c0b4d6e_noise-pattern.png')] opacity-10"></div>
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
-          <h2 className="text-4xl font-bold text-white mb-8 tracking-tight">
-            Begin Your{" "}
-            <span className="text-amber-100">Professional Journey</span>
-          </h2>
-          <p className="text-xl text-amber-100/90 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Transform your academic potential into career success with our
-            AI-powered resume optimization platform.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/resume-score"
-              className="px-8 py-4 bg-white text-amber-600 hover:bg-gray-50 rounded-xl font-medium transition-colors shadow-xl hover:shadow-2xl flex items-center justify-center gap-3"
-            >
-              <FiUpload className="w-5 h-5" />
-              <span className="font-semibold">Start Free Analysis</span>
-            </Link>
-            <button className="px-8 py-4 border border-white/30 text-white hover:bg-white/10 rounded-xl font-medium transition-colors backdrop-blur-sm">
-              <span className="font-semibold">Schedule Consultation</span>
-            </button>
-          </div>
-          <p className="text-amber-100/80 text-sm mt-8">
-            Premium services available for career coaching and interview
-            preparation
-          </p>
-        </div>
-        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-amber-400/10 rounded-full blur-xl"></div>
-        <div className="absolute -top-20 -right-20 w-80 h-80 bg-orange-400/10 rounded-full blur-xl"></div>
-      </section>
     </div>
   );
 }

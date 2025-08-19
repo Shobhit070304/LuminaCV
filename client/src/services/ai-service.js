@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
 export const analyzeResume = async (text) => {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
   const prompt = `
 You are an AI resume evaluator. Analyze the following resume and return:

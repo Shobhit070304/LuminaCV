@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ResumeAnalyse from "./pages/ResumeAnalyse";
 import NotFound from "./pages/NotFound";
+import ResumeUploader from "./pages/ResumeUploader";
 
 const App = () => {
   return (
@@ -41,6 +42,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ResumeAnalyse />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/resume-uploader"
+          element={
+            <ProtectedRoute>
+              <ResumeUploader />
             </ProtectedRoute>
           }
         />
